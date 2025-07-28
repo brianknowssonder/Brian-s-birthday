@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Brian's Black-Tie Birthday Celebration</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #000000;
+            --secondary: #111111;
+            --accent: #e0a80d;
+            --text: #e0e0e0;
+            --text-secondary: #aaaaaa;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: var(--primary);
+            color: var(--text);
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+        
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+            position: relative;
+            z-index: 1;
+        }
+        
+        header {
+            text-align: center;
+            padding: 4rem 0;
+            position: relative;
+        }
+        
+        h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 4rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            background: linear-gradient(90deg, var(--accent), #ffffff);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            letter-spacing: 2px;
+        }
+        
+        h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            margin-bottom: 2rem;
+            color: var(--accent);
+        }
+        
+        .subtitle {
+            font-size: 1.2rem;
+            max-width: 700px;
+            margin: 0 auto 2rem;
+            color: var(--text-secondary);
+        }
+        
+        .date-badge {
+            display: inline-block;
+            background-color: var(--secondary);
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            font-size: 1.5rem;
+            margin: 2rem 0;
+            border: 1px solid var(--accent);
+            box-shadow: 0 0 20px rgba(224, 168, 13, 0.2);
+        }
+        
+        .details-card {
+            background-color: var(--secondary);
+            border-radius: 15px;
+            padding: 3rem;
+            margin: 3rem 0;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            border: 1px solid #222;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .details-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 20% 30%, rgba(224, 168, 13, 0.1), transparent 70%);
+            pointer-events: none;
+        }
+        
+        .detail-item {
+            display: flex;
+            margin-bottom: 1.5rem;
+            align-items: center;
+        }
+        
+        .detail-icon {
+            width: 50px;
+            height: 50px;
+            background-color: rgba(224, 168, 13, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 1.5rem;
+            flex-shrink: 0;
+            border: 1px solid var(--accent);
+        }
+        
+        .detail-content h3 {
+            font-size: 1.3rem;
+            margin-bottom: 0.3rem;
+            color: var(--accent);
+        }
+        
+        .map-container {
+            height: 400px;
+            margin: 3rem 0;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            border: 1px solid #222;
+        }
+        
+        .map-container iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+        
+        .note {
+            background-color: rgba(224, 168, 13, 0.1);
+            padding: 1.5rem;
+            border-radius: 10px;
+            border-left: 4px solid var(--accent);
+            margin: 2rem 0;
+        }
+        
+        .cta-section {
+            text-align: center;
+            margin: 4rem 0;
+        }
+        
+        .rsvp-button {
+            background: linear-gradient(135deg, var(--accent), #d4a00d);
+            color: #000;
+            border: none;
+            padding: 1.2rem 3rem;
+            font-size: 1.2rem;
+            font-weight: 600;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(224, 168, 13, 0.4);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin: 1rem 0;
+        }
+        
+        .rsvp-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(224, 168, 13, 0.6);
+        }
+        
+        .rsvp-button:active {
+            transform: translateY(1px);
+        }
+        
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            z-index: 100;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .modal-content {
+            background-color: var(--secondary);
+            padding: 3rem;
+            border-radius: 15px;
+            max-width: 500px;
+            width: 90%;
+            position: relative;
+            border: 1px solid var(--accent);
+            box-shadow: 0 0 30px rgba(224, 168, 13, 0.3);
+        }
+        
+        .close-modal {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--text-secondary);
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--text-secondary);
+        }
+        
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 1rem;
+            background-color: #111;
+            border: 1px solid #333;
+            border-radius: 5px;
+            color: var(--text);
+            font-family: 'Montserrat', sans-serif;
+        }
+        
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--accent);
+        }
+        
+        footer {
+            text-align: center;
+            padding: 3rem 0;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+        
+        .confetti {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background-color: var(--accent);
+            opacity: 0.7;
+            animation: confetti-fall 5s linear infinite;
+        }
+        
+        @keyframes confetti-fall {
+            0% {
+                transform: translateY(-100px) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(100vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.5rem;
+            }
+            
+            h2 {
+                font-size: 1.5rem;
+            }
+            
+            .details-card {
+                padding: 2rem 1.5rem;
+            }
+            
+            .detail-item {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .detail-icon {
+                margin-bottom: 1rem;
+                margin-right: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="particles-js" class="particles"></div>
+    
+    <div class="container">
+        <header>
+            <h1>Brian's Birthday Celebration</h1>
+            <p class="subtitle">Join me for an elegant black evening of sophistication, laughter, and celebration at the exquisite Picasso Steakhouse Restaurant</p>
+            <div class="date-badge">1st August 2024</div>
+        </header>
+        
+        <div class="details-card">
+            <h2>Event Details</h2>
+            
+            <div class="detail-item">
+                <div class="detail-icon">📅</div>
+                <div class="detail-content">
+                    <h3>Date & Time</h3>
+                    <p>Friday, August 1st, 2024<br>2:00 PM - 5:00 PM</p>
+                </div>
+            </div>
+            
+            <div class="detail-item">
+                <div class="detail-icon">📍</div>
+                <div class="detail-content">
+                    <h3>Venue</h3>
+                    <p>Picasso Steakhouse Restaurant Nairobi<br>
+                    An elegant setting for our celebration <br>
+                    Tom Mboya street CBD </p>
+                </div>
+            </div>
+            
+            <div class="detail-item">
+                <div class="detail-icon">👔</div>
+                <div class="detail-content">
+                    <h3>Dress Code</h3>
+                    <p>Black<br>
+                    Embrace the theme of elegance</p>
+                </div>
+            </div>
+            
+            <div class="note">
+                <p><strong>Note:</strong> Food and drinks will be available for purchase at the restaurant's menu prices. This allows everyone to choose according to their preferences.</p>
+                <p><strong>Note:</strong> budget(200-1000 KSh)</p>
+            </div>
+        </div>
+        
+        <div class="map-container">
+            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3988.817476157567!2d36.81321531533068!3d-1.282635635979277!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x182f10d664fec3cd%3A0x7e3b6ef92b1b8c9f!2sPicasso%20Restaurant!5e0!3m2!1sen!2ske!4v1620000000000!5m2!1sen!2ske" allowfullscreen="" loading="lazy"></iframe>
+        </div>
+        
+        <div class="cta-section">
+            <h2>Will You Join Me?</h2>
+            <p>Your presence would make my celebration complete</p>
+            <button class="rsvp-button" id="open-rsvp">RSVP Now</button>
+        </div>
+    </div>
+    
+    <div class="modal" id="rsvp-modal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h2>RSVP for Brian's Birthday</h2>
+            <form id="rsvp-form">
+                <div class="form-group">
+                    <label for="name">Your Full Name</label>
+                    <input type="text" id="name" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="email">Email Address</label>
+                    <input type="email" id="email" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="attendance">Will you attend?</label>
+                    <select id="attendance" required>
+                        <option value="">Select an option</option>
+                        <option value="yes">Yes, I'll be there!</option>
+                        <option value="no">Sorry, can't make it</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="guests">Number of Guests (including you)</label>
+                    <input type="number" id="guests" min="1" value="1">
+                </div>
+                
+                <div class="form-group">
+                    <label for="message">Message for Brian (optional)</label>
+                    <input type="text" id="message" placeholder="Birthday wishes or dietary restrictions">
+                </div>
+                
+                <button type="submit" class="rsvp-button">Submit RSVP</button>
+            </form>
+        </div>
+    </div>
+    
+    <footer>
+        <p>For any inquiries, please contact me at mwangibrianmwaura@gmail.com | +254 712 885690</p>
+        <p>© 2025 Brian's Birthday Celebration. All rights reserved.</p>
+    </footer>
+    
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    <script>
+        // Initialize particles.js
+        particlesJS("particles-js", {
+            "particles": {
+                "number": {
+                    "value": 80,
+                    "density": {
+                        "enable": true,
+                        "value_area": 800
+                    }
+                },
+                "color": {
+                    "value": "#e0a80d"
+                },
+                "shape": {
+                    "type": "circle",
+                    "stroke": {
+                        "width": 0,
+                        "color": "#000000"
+                    }
+                },
+                "opacity": {
+                    "value": 0.5,
+                    "random": true,
+                    "anim": {
+                        "enable": true,
+                        "speed": 1,
+                        "opacity_min": 0.1,
+                        "sync": false
+                    }
+                },
+                "size": {
+                    "value": 3,
+                    "random": true,
+                    "anim": {
+                        "enable": true,
+                        "speed": 2,
+                        "size_min": 0.1,
+                        "sync": false
+                    }
+                },
+                "line_linked": {
+                    "enable": true,
+                    "distance": 150,
+                    "color": "#e0a80d",
+                    "opacity": 0.3,
+                    "width": 1
+                },
+                "move": {
+                    "enable": true,
+                    "speed": 1,
+                    "direction": "none",
+                    "random": true,
+                    "straight": false,
+                    "out_mode": "out",
+                    "bounce": false,
+                    "attract": {
+                        "enable": true,
+                        "rotateX": 600,
+                        "rotateY": 1200
+                    }
+                }
+            },
+            "interactivity": {
+                "detect_on": "canvas",
+                "events": {
+                    "onhover": {
+                        "enable": true,
+                        "mode": "grab"
+                    },
+                    "onclick": {
+                        "enable": true,
+                        "mode": "push"
+                    },
+                    "resize": true
+                },
+                "modes": {
+                    "grab": {
+                        "distance": 140,
+                        "line_linked": {
+                            "opacity": 1
+                        }
+                    },
+                    "bubble": {
+                        "distance": 400,
+                        "size": 40,
+                        "duration": 2,
+                        "opacity": 8,
+                        "speed": 3
+                    },
+                    "repulse": {
+                        "distance": 200,
+                        "duration": 0.4
+                    },
+                    "push": {
+                        "particles_nb": 4
+                    },
+                    "remove": {
+                        "particles_nb": 2
+                    }
+                }
+            },
+            "retina_detect": true
+        });
+        
+        // Modal functionality
+        const modal = document.getElementById('rsvp-modal');
+        const openBtn = document.getElementById('open-rsvp');
+        const closeBtn = document.querySelector('.close-modal');
+        
+        openBtn.addEventListener('click', () => {
+            modal.style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+        });
+        
+        closeBtn.addEventListener('click', () => {
+            modal.style.display = 'none';
+            document.body.style.overflow = 'auto';
+        });
+        
+        window.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                modal.style.display = 'none';
+                document.body.style.overflow = 'auto';
+            }
+        });
+        
+        // Form submission
+        const form = document.getElementById('rsvp-form');
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            // Get form values
+            const name = document.getElementById('name').value;
+            const attendance = document.getElementById('attendance').value;
+            
+            // In a real implementation, you would send this data to a server
+            // For now, we'll just show a confirmation
+            alert(`Thank you, ${name}! Your RSVP has been ${attendance === 'yes' ? 'confirmed. Looking forward to seeing you!' : 'received. Sorry you can\'t make it!'}`);
+            
+            // Close modal
+            modal.style.display = 'none';
+            document.body.style.overflow = 'auto';
+            
+            // Create some celebration confetti if attending
+            if (attendance === 'yes') {
+                createConfetti();
+            }
+            
+            // Reset form
+            form.reset();
+        });
+        
+        // Confetti effect
+        function createConfetti() {
+            const colors = ['#e0a80d', '#d1a11c', '#e8b732', '#f0c14b'];
+            
+            for (let i = 0; i < 100; i++) {
+                const confetti = document.createElement('div');
+                confetti.className = 'confetti';
+                confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                confetti.style.left = Math.random() * 100 + 'vw';
+                confetti.style.width = (Math.random() * 10 + 5) + 'px';
+                confetti.style.height = (Math.random() * 10 + 5) + 'px';
+                confetti.style.animationDuration = (Math.random() * 3 + 2) + 's';
+                confetti.style.animationDelay = (Math.random() * 2) + 's';
+                document.body.appendChild(confetti);
+                
+                // Remove after animation
+                setTimeout(() => {
+                    confetti.remove();
+                }, 5000);
+            }
+        }
+        
+        // Create some initial confetti
+        window.addEventListener('load', () => {
+            setTimeout(createConfetti, 1000);
+        });
+    </script>
+</body>
+</html>
